@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:smart_shop/pages/login_page.dart';
 import 'package:smart_shop/pages/register_page.dart';
+import 'package:smart_shop/services/shared_service.dart';
 
 import 'pages/home_page.dart';
 
-void main() {
+Widget _defaultHome = const LoginPage();
+
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  bool _result = await SharedService.isLoggedIn();
+  if(_result) {
+    _defaultHome = const HomePage();
+  }
+
   runApp(const MyApp());
 }
 
@@ -21,7 +31,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
      routes: {
-       '/' : (context) => const LoginPage(),
+       '/' : (context) => _defaultHome,
        '/home' : (context) => const HomePage(),
        '/register' : (context) => const RegisterPage(),
      }
